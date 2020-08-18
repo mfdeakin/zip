@@ -12,10 +12,10 @@ Basic usage:
 
 std::vector<std::array<double, 3>> pos, vel;
 // ...
-for(auto [pos, vel] : zip::make_zip(pos, vel)) {
+for(auto [p, v] : zip::make_zip(pos, vel)) {
   // ...
-  for(auto [c, v] : zip::make_zip(pos, vel)) {
-    c += v * dt;
+  for(auto [p_x, v_x] : zip::make_zip(p, v)) {
+    p_x += v_x * dt;
   }
 }
 
