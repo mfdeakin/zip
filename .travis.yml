@@ -1,0 +1,35 @@
+language: cpp
+sudo: false
+dist: xenial
+
+os:
+- linux
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-7
+    - lcov
+
+git:
+  submodules: false
+branches:
+  only:
+  - master
+
+before_script:
+- if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then ln -s $(which g++-7) g++; export PATH="${PWD}:${PATH}"; fi
+
+script:
+- cmake -D CMAKE_BUILD_TYPE=Debug -D TEST_PERFORMANCE=FALSE -D CMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -fsanitize=address" ./
+- make VERBOSE=1 -j 2
+- ctest -VV
+
+after_script:
+- cd ${TRAVIS_BUILD_DIR}
+- lcov --directory . --capture --output-file coverage.info
+- lcov --remove coverage.info '/usr/*' '*/catch.hpp' --output-file coverage.info
+- lcov --list coverage.info
+- bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
