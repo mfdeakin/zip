@@ -42,6 +42,22 @@ std::sort(z.begin(), z.end(),
 ------------------------------------------------------------------------------
 Benchmark                                    Time             CPU   Iterations
 ------------------------------------------------------------------------------
+BM_Small_PosVel_Index_mean                 111 ns          111 ns           30
+BM_Small_PosVel_Index_median               115 ns          115 ns           30
+BM_Small_PosVel_Index_stddev              9.16 ns         9.10 ns           30
+
+BM_Small_PosVel_Zip_mean                   103 ns          103 ns           30
+BM_Small_PosVel_Zip_median                 101 ns          101 ns           30
+BM_Small_PosVel_Zip_stddev                8.29 ns         8.27 ns           30
+
+BM_Large_PosVel_Index_mean              237347 ns       236161 ns           30
+BM_Large_PosVel_Index_median            238537 ns       237313 ns           30
+BM_Large_PosVel_Index_stddev             16817 ns        16710 ns           30
+
+BM_Large_PosVel_Zip_mean                239222 ns       238073 ns           30
+BM_Large_PosVel_Zip_median              237924 ns       236708 ns           30
+BM_Large_PosVel_Zip_stddev               19898 ns        19750 ns           30
+
 BM_1D_Small_Index_Iterate_mean            22.4 ns         22.4 ns           30
 BM_1D_Small_Index_Iterate_median          22.7 ns         22.6 ns           30
 BM_1D_Small_Index_Iterate_stddev          3.73 ns         3.72 ns           30
