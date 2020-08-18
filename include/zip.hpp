@@ -68,12 +68,12 @@ class Zip {
         : iters_(iters) {}
 
     constexpr const reference operator*() const noexcept {
-      return zip_internal_::ref_tuple_map(
+      return zip_internal_::ref_tuple_transform(
           iters_, zip_internal_::const_iterator_deref());
     }
 
     constexpr reference operator*() noexcept {
-      return zip_internal_::ref_tuple_map(
+      return zip_internal_::ref_tuple_transform(
           iters_, zip_internal_::const_iterator_deref());
     }
 
@@ -89,13 +89,13 @@ class Zip {
     }
 
     constexpr iterator_t &operator+=(const int s) noexcept {
-      zip_internal_::ref_tuple_map(
+      zip_internal_::ref_tuple_transform(
           iters_, zip_internal_::iterator_add(s));
       return *this;
     }
 
     constexpr iterator_t &operator-=(const int s) noexcept {
-      zip_internal_::ref_tuple_map(
+      zip_internal_::ref_tuple_transform(
           iters_, zip_internal_::iterator_add(-s));
       return *this;
     }
@@ -103,7 +103,7 @@ class Zip {
     constexpr iterator_t operator+(
         const int s) const noexcept {
       iterator_t new_iters = *this;
-      zip_internal_::ref_tuple_map(
+      zip_internal_::ref_tuple_transform(
           new_iters.iters_, zip_internal_::iterator_add(s));
       return new_iters;
     }
@@ -111,7 +111,7 @@ class Zip {
     constexpr iterator_t operator-(
         const int s) const noexcept {
       iterator_t new_iters = *this;
-      zip_internal_::ref_tuple_map(
+      zip_internal_::ref_tuple_transform(
           new_iters.iters_,
           zip_internal_::iterator_add(-s));
       return new_iters;
@@ -119,13 +119,13 @@ class Zip {
 
     // Pre-increment operators
     constexpr iterator_t &operator++() noexcept {
-      zip_internal_::ref_tuple_map(
+      zip_internal_::ref_tuple_transform(
           iters_, zip_internal_::iterator_incr());
       return *this;
     }
 
     constexpr iterator_t &operator--() noexcept {
-      zip_internal_::ref_tuple_map(
+      zip_internal_::ref_tuple_transform(
           iters_, zip_internal_::iterator_decr());
       return *this;
     }
@@ -198,24 +198,24 @@ class Zip {
 
   // Methods
   constexpr const_iterator cbegin() const noexcept {
-    return const_iterator(tuple_map(
+    return const_iterator(tuple_transform(
         contents_,
         zip_internal_::const_begin_iterator_converter()));
   }
   constexpr const_iterator cend() const noexcept {
-    return const_iterator(tuple_map(
+    return const_iterator(tuple_transform(
         contents_,
         zip_internal_::const_end_iterator_converter()));
   }
 
   constexpr iterator begin() const noexcept {
-    return iterator(tuple_map(
+    return iterator(tuple_transform(
         contents_,
         zip_internal_::begin_iterator_converter()));
   }
   constexpr iterator end() const noexcept {
     return iterator(
-        tuple_map(contents_,
+        tuple_transform(contents_,
                   zip_internal_::end_iterator_converter()));
   }
 

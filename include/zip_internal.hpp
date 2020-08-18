@@ -118,41 +118,41 @@ struct iterator_decr {
   }
 };
 
-// Source for the tuple_map object:
+// Source for the tuple_transform object:
 // https://codereview.stackexchange.com/questions/193420/apply-a-function-to-each-element-of-a-tuple-map-a-tuple
 template <class F, typename Tuple, size_t... Is>
-auto tuple_map_impl(Tuple t, F f,
+auto tuple_transform_impl(Tuple t, F f,
                     std::index_sequence<Is...>) {
   return std::make_tuple(f(std::get<Is>(t))...);
 }
 
 template <class F, typename... Args>
-auto tuple_map(const std::tuple<Args...> &t, F f) {
-  return tuple_map_impl(
+auto tuple_transform(const std::tuple<Args...> &t, F f) {
+  return tuple_transform_impl(
       t, f, std::make_index_sequence<sizeof...(Args)>{});
 }
 
 template <class F, typename Tuple, size_t... Is>
-auto ref_tuple_map_impl(Tuple &t, F f,
+auto ref_tuple_transform_impl(Tuple &t, F f,
                         std::index_sequence<Is...>) {
   return std::forward_as_tuple(f(std::get<Is>(t))...);
 }
 
 template <class F, typename... Args>
-auto ref_tuple_map(std::tuple<Args...> &t, F f) {
-  return ref_tuple_map_impl(
+auto ref_tuple_transform(std::tuple<Args...> &t, F f) {
+  return ref_tuple_transform_impl(
       t, f, std::make_index_sequence<sizeof...(Args)>{});
 }
 
 template <class F, typename Tuple, size_t... Is>
-auto ref_tuple_map_impl(const Tuple &t, F f,
+auto ref_tuple_transform_impl(const Tuple &t, F f,
                         std::index_sequence<Is...>) {
   return std::forward_as_tuple(f(std::get<Is>(t))...);
 }
 
 template <class F, typename... Args>
-auto ref_tuple_map(const std::tuple<Args...> &t, F f) {
-  return ref_tuple_map_impl(
+auto ref_tuple_transform(const std::tuple<Args...> &t, F f) {
+  return ref_tuple_transform_impl(
       t, f, std::make_index_sequence<sizeof...(Args)>{});
 }
 
@@ -165,18 +165,17 @@ namespace std {
 // implementation of lvalue tuple swaps, change it for
 // rvalues
 template <typename... elements>
-constexpr typename enable_if<
-    conjunction<is_swappable<elements>...>::value>::type
+constexpr enable_if_t<
+    conjunction<is_swappable<elements>...>::value>
 swap(tuple<elements...> &&x,
      tuple<elements...> &&y) noexcept(noexcept(x.swap(y))) {
   x.swap(y);
 }
 
-template <typename... _Elements>
-_GLIBCXX20_CONSTEXPR typename enable_if<
-    !__and_<__is_swappable<_Elements>...>::value>::type
-swap(tuple<_Elements...> &&,
-     tuple<_Elements...> &&) = delete;
+template <typename... elements>
+constexpr enable_if_t<
+    !__and_<__is_swappable<elements>...>::value>
+swap(tuple<elements...> &&, tuple<elements...> &&) = delete;
 
 }  // namespace std
 
